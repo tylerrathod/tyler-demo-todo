@@ -35,3 +35,5 @@ See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rule
 
 - Use the **Delete** control on a todo row to remove that todo from the currently selected list.
 - Todo deletes update local React state only; there is no backend or persistence layer.
+- Priority is shown with color-coded badges and matching row accents: low is green, medium is amber, and high is red.
+- Completed todos keep their priority color and remain readable while the title is struck through.

@@ -143,17 +143,36 @@ button[type='submit']:hover {
   gap: 1rem;
   padding: 0.75rem 0.85rem;
   border: 1px solid #e2e8f0;
+  border-left-width: 5px;
   border-radius: 10px;
   background: #f8fafc;
 }
 
+.todo-priority-low {
+  border-left-color: #10b981;
+  background: #f7fefb;
+}
+
+.todo-priority-medium {
+  border-left-color: #f59e0b;
+  background: #fffaf0;
+}
+
+.todo-priority-high {
+  border-left-color: #ef4444;
+  background: #fff7f7;
+}
+
 .todo-item.completed {
-  opacity: 0.65;
+  background: #f8fafc;
 }
 
 .todo-item.completed .todo-title {
   text-decoration: line-through;
-  color: #64748b;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #0f172a;
+  color: #0f172a;
+  font-weight: 600;
 }
 
 .todo-main {
@@ -184,24 +203,27 @@ button[type='submit']:hover {
 .priority {
   text-transform: capitalize;
   font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.2rem 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid currentColor;
   border-radius: 999px;
+  line-height: 1.2;
 }
 
 .priority-low {
-  background: #ecfdf5;
-  color: #047857;
+  background: #d1fae5;
+  color: #065f46;
 }
 
 .priority-medium {
-  background: #fffbeb;
-  color: #b45309;
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .priority-high {
-  background: #fef2f2;
-  color: #b91c1c;
+  background: #fee2e2;
+  color: #991b1b;
 }
 
 .due-date {
