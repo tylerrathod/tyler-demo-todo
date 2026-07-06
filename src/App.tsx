@@ -20,12 +20,14 @@ function App() {
     addTodo,
     toggleTodo,
     deleteTodo,
+    reorderTodo,
   } = useTodos()
 
   const displayedTodos = useMemo(
     () => getDisplayedTodos(todosForSelectedList, filter, sort),
     [filter, sort, todosForSelectedList],
   )
+  const canReorderTodos = sort === 'manual'
 
   return (
     <div className="app">
@@ -75,10 +77,17 @@ function App() {
               </select>
             </label>
           </section>
+          <p className="reorder-help">
+            {canReorderTodos
+              ? 'Drag todo rows to reorder this list.'
+              : 'Switch to manual order to reorder todos.'}
+          </p>
           <TodoList
             todos={displayedTodos}
             onToggle={toggleTodo}
             onDelete={deleteTodo}
+            onReorder={reorderTodo}
+            canReorder={canReorderTodos}
             emptyMessage={
               todosForSelectedList.length === 0
                 ? 'No todos in this list yet.'

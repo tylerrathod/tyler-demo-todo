@@ -1,4 +1,5 @@
-import type { Priority, TodoItem, TodoList } from './types'
+import { DEFAULT_LIST_COLOR, listColors } from './types'
+import type { ListColor, Priority, TodoItem, TodoList } from './types'
 
 export const TODO_STORAGE_KEY = 'tyler-demo-todo-state'
 
@@ -20,6 +21,10 @@ function isPriority(value: unknown): value is Priority {
   return typeof value === 'string' && priorities.includes(value as Priority)
 }
 
+function isListColor(value: unknown): value is ListColor {
+  return typeof value === 'string' && listColors.includes(value as ListColor)
+}
+
 function cloneTodoState(state: TodoState): TodoState {
   return {
     lists: state.lists.map((list) => ({ ...list })),
@@ -32,7 +37,7 @@ export function createSeedTodoState(): TodoState {
   const defaultListId = crypto.randomUUID()
 
   return {
-    lists: [{ id: defaultListId, name: 'Personal' }],
+    lists: [{ id: defaultListId, name: 'Personal', color: DEFAULT_LIST_COLOR }],
     todos: [
       {
         id: crypto.randomUUID(),
@@ -93,7 +98,11 @@ function parseLists(value: unknown): TodoList[] | null {
 
     if (seenListIds.has(list.id)) return null
     seenListIds.add(list.id)
-    lists.push({ id: list.id, name: list.name })
+    lists.push({
+      id: list.id,
+      name: list.name,
+      color: isListColor(list.color) ? list.color : DEFAULT_LIST_COLOR,
+    })
   }
 
   return lists

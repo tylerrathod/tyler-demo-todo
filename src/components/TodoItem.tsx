@@ -1,9 +1,16 @@
 import type { TodoItem as Todo } from '../types'
+import type { DragEventHandler } from 'react'
 
 type TodoItemProps = {
   todo: Todo
   onToggle: (id: string) => void
   onDelete: (id: string) => void
+  draggable?: boolean
+  isDragging?: boolean
+  onDragStart?: DragEventHandler<HTMLLIElement>
+  onDragOver?: DragEventHandler<HTMLLIElement>
+  onDrop?: DragEventHandler<HTMLLIElement>
+  onDragEnd?: DragEventHandler<HTMLLIElement>
 }
 
 function formatDueDate(dueDate: string | null) {
@@ -16,14 +23,37 @@ function formatDueDate(dueDate: string | null) {
   })
 }
 
-export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
+export function TodoItem({
+  todo,
+  onToggle,
+  onDelete,
+  draggable = false,
+  isDragging = false,
+  onDragStart,
+  onDragOver,
+  onDrop,
+  onDragEnd,
+}: TodoItemProps) {
   const dueLabel = formatDueDate(todo.dueDate)
-  const itemClassName = `todo-item todo-priority-${todo.priority}${
-    todo.completed ? ' completed' : ''
-  }`
+  const itemClassName = [
+    'todo-item',
+    `todo-priority-${todo.priority}`,
+    todo.completed ? 'completed' : '',
+    draggable ? 'todo-reorderable' : '',
+    isDragging ? 'dragging' : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
-    <li className={itemClassName}>
+    <li
+      className={itemClassName}
+      draggable={draggable}
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+      onDragEnd={onDragEnd}
+    >
       <label className="todo-main">
         <input
           type="checkbox"

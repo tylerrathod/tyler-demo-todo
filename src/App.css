@@ -50,11 +50,15 @@
   width: 100%;
   text-align: left;
   border: 1px solid transparent;
+  border-left-width: 5px;
   background: transparent;
   border-radius: 8px;
   padding: 0.55rem 0.7rem;
   cursor: pointer;
   color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .list-button:hover {
@@ -68,6 +72,68 @@
   font-weight: 600;
 }
 
+.list-button.list-color-blue {
+  border-left-color: #2563eb;
+}
+
+.list-button.list-color-emerald {
+  border-left-color: #059669;
+}
+
+.list-button.list-color-amber {
+  border-left-color: #d97706;
+}
+
+.list-button.list-color-violet {
+  border-left-color: #7c3aed;
+}
+
+.list-button.list-color-rose {
+  border-left-color: #e11d48;
+}
+
+.list-color-dot,
+.list-color-swatch {
+  display: inline-block;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.list-color-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+}
+
+.list-color-swatch {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.list-color-dot.list-color-blue,
+.list-color-swatch.list-color-blue {
+  background: #2563eb;
+}
+
+.list-color-dot.list-color-emerald,
+.list-color-swatch.list-color-emerald {
+  background: #059669;
+}
+
+.list-color-dot.list-color-amber,
+.list-color-swatch.list-color-amber {
+  background: #d97706;
+}
+
+.list-color-dot.list-color-violet,
+.list-color-swatch.list-color-violet {
+  background: #7c3aed;
+}
+
+.list-color-dot.list-color-rose,
+.list-color-swatch.list-color-rose {
+  background: #e11d48;
+}
+
 .add-list-form,
 .todo-form {
   display: flex;
@@ -77,6 +143,33 @@
 
 .add-list-form {
   flex-direction: column;
+}
+
+.list-color-picker {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.list-color-picker legend {
+  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.list-color-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.list-color-option {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #334155;
+  font-size: 0.9rem;
 }
 
 .add-list-form input,
@@ -117,6 +210,12 @@
   padding: 0.45rem 0.65rem;
   background: #fff;
   color: #1a2332;
+}
+
+.reorder-help {
+  margin: -0.4rem 0 1rem;
+  color: #64748b;
+  font-size: 0.85rem;
 }
 
 .todo-form input[type='text'] {
@@ -197,6 +296,18 @@ button[type='submit']:hover {
   text-decoration-color: #0f172a;
   color: #0f172a;
   font-weight: 600;
+}
+
+.todo-item.todo-reorderable {
+  cursor: grab;
+}
+
+.todo-item.todo-reorderable:active {
+  cursor: grabbing;
+}
+
+.todo-item.dragging {
+  opacity: 0.6;
 }
 
 .todo-main {
