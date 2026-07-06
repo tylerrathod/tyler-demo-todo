@@ -95,6 +95,30 @@
   align-items: center;
 }
 
+.todo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.todo-controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #475569;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.todo-controls select {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.45rem 0.65rem;
+  background: #fff;
+  color: #1a2332;
+}
+
 .todo-form input[type='text'] {
   flex: 1;
   min-width: 160px;
