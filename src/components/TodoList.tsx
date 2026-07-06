@@ -42,6 +42,14 @@ export function TodoList({
             event.dataTransfer.effectAllowed = 'move'
             event.dataTransfer.setData('text/plain', todo.id)
           }}
+          onDragEnter={(event) => {
+            if (!canReorder || !draggedTodoId || draggedTodoId === todo.id) {
+              return
+            }
+
+            event.preventDefault()
+            onReorder?.(draggedTodoId, todo.id)
+          }}
           onDragOver={(event) => {
             if (!canReorder || !draggedTodoId || draggedTodoId === todo.id) {
               return

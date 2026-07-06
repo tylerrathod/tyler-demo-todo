@@ -8,6 +8,7 @@ type TodoItemProps = {
   draggable?: boolean
   isDragging?: boolean
   onDragStart?: DragEventHandler<HTMLLIElement>
+  onDragEnter?: DragEventHandler<HTMLLIElement>
   onDragOver?: DragEventHandler<HTMLLIElement>
   onDrop?: DragEventHandler<HTMLLIElement>
   onDragEnd?: DragEventHandler<HTMLLIElement>
@@ -30,6 +31,7 @@ export function TodoItem({
   draggable = false,
   isDragging = false,
   onDragStart,
+  onDragEnter,
   onDragOver,
   onDrop,
   onDragEnd,
@@ -50,6 +52,7 @@ export function TodoItem({
       className={itemClassName}
       draggable={draggable}
       onDragStart={onDragStart}
+      onDragEnter={onDragEnter}
       onDragOver={onDragOver}
       onDrop={onDrop}
       onDragEnd={onDragEnd}
