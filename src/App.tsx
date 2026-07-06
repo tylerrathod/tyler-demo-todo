@@ -14,6 +14,7 @@ function App() {
     addList,
     addTodo,
     toggleTodo,
+    deleteTodo,
   } = useTodos()
 
   return (
@@ -40,7 +41,11 @@ function App() {
           </header>
 
           <TodoForm onAdd={addTodo} />
-          <TodoList todos={todosForSelectedList} onToggle={toggleTodo} />
+          <TodoList
+            todos={todosForSelectedList}
+            onToggle={toggleTodo}
+            onDelete={deleteTodo}
+          />
         </main>
       </div>
     </div>

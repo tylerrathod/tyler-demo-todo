@@ -139,6 +139,7 @@ button[type='submit']:hover {
 .todo-item {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 1rem;
   padding: 0.75rem 0.85rem;
   border: 1px solid #e2e8f0;
@@ -164,6 +165,13 @@ button[type='submit']:hover {
 
 .todo-title {
   word-break: break-word;
+}
+
+.todo-details {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
 }
 
 .todo-meta {
@@ -202,6 +210,21 @@ button[type='submit']:hover {
   white-space: nowrap;
 }
 
+.delete-todo-button {
+  border: 1px solid #fecaca;
+  background: #fff;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 0.4rem 0.65rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.delete-todo-button:hover {
+  background: #fef2f2;
+}
+
 .empty-state {
   margin: 0;
   color: #64748b;
@@ -215,5 +238,10 @@ button[type='submit']:hover {
   .todo-item {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .todo-details {
+    width: 100%;
+    justify-content: space-between;
   }
 }

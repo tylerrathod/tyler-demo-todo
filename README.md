@@ -30,3 +30,8 @@ If you are developing a production application, we recommend enabling type-aware
 ```
 
 See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+
+## Todo behavior
+
+- Use the **Delete** control on a todo row to remove that todo from the currently selected list.
+- Todo deletes update local React state only; there is no backend or persistence layer.

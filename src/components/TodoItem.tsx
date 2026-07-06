@@ -3,6 +3,7 @@ import type { TodoItem as Todo } from '../types'
 type TodoItemProps = {
   todo: Todo
   onToggle: (id: string) => void
+  onDelete: (id: string) => void
 }
 
 function formatDueDate(dueDate: string | null) {
@@ -15,7 +16,7 @@ function formatDueDate(dueDate: string | null) {
   })
 }
 
-export function TodoItem({ todo, onToggle }: TodoItemProps) {
+export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
   const dueLabel = formatDueDate(todo.dueDate)
 
   return (
@@ -28,11 +29,21 @@ export function TodoItem({ todo, onToggle }: TodoItemProps) {
         />
         <span className="todo-title">{todo.title}</span>
       </label>
-      <div className="todo-meta">
-        <span className={`priority priority-${todo.priority}`}>
-          {todo.priority}
-        </span>
-        {dueLabel ? <span className="due-date">Due {dueLabel}</span> : null}
+      <div className="todo-details">
+        <div className="todo-meta">
+          <span className={`priority priority-${todo.priority}`}>
+            {todo.priority}
+          </span>
+          {dueLabel ? <span className="due-date">Due {dueLabel}</span> : null}
+        </div>
+        <button
+          type="button"
+          className="delete-todo-button"
+          onClick={() => onDelete(todo.id)}
+          aria-label={`Delete ${todo.title}`}
+        >
+          Delete
+        </button>
       </div>
     </li>
   )
