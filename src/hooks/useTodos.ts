@@ -1,50 +1,45 @@
-import { useMemo, useState } from 'react'
-import type { Priority, TodoItem, TodoList } from '../types'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  createSeedTodoState,
+  getValidSelectedListId,
+  loadTodoState,
+  saveTodoState,
+} from '../todoStorage'
+import type { Priority, TodoItem } from '../types'
 
-const defaultListId = crypto.randomUUID()
+function getTodoStorage() {
+  if (typeof window === 'undefined') return null
 
-const seedLists: TodoList[] = [{ id: defaultListId, name: 'Personal' }]
-
-const seedTodos: TodoItem[] = [
-  {
-    id: crypto.randomUUID(),
-    listId: defaultListId,
-    title: 'Buy groceries',
-    completed: false,
-    priority: 'medium',
-    dueDate: '2026-07-08',
-  },
-  {
-    id: crypto.randomUUID(),
-    listId: defaultListId,
-    title: 'Finish project proposal',
-    completed: false,
-    priority: 'high',
-    dueDate: '2026-07-07',
-  },
-  {
-    id: crypto.randomUUID(),
-    listId: defaultListId,
-    title: 'Read a chapter',
-    completed: true,
-    priority: 'low',
-    dueDate: null,
-  },
-]
+  try {
+    return window.localStorage
+  } catch {
+    return null
+  }
+}
 
 export function useTodos() {
-  const [lists, setLists] = useState<TodoList[]>(seedLists)
-  const [todos, setTodos] = useState<TodoItem[]>(seedTodos)
-  const [selectedListId, setSelectedListId] = useState<string>(defaultListId)
+  const [todoState, setTodoState] = useState(() =>
+    loadTodoState(getTodoStorage(), createSeedTodoState()),
+  )
+  const { lists, todos, selectedListId } = todoState
 
   const selectedList = useMemo(
     () => lists.find((list) => list.id === selectedListId) ?? lists[0] ?? null,
     [lists, selectedListId],
   )
+  const activeListId = selectedList?.id ?? ''
+
+  useEffect(() => {
+    saveTodoState(getTodoStorage(), {
+      lists,
+      todos,
+      selectedListId: activeListId,
+    })
+  }, [activeListId, lists, todos])
 
   const todosForSelectedList = useMemo(
-    () => todos.filter((todo) => todo.listId === selectedListId),
-    [todos, selectedListId],
+    () => todos.filter((todo) => todo.listId === activeListId),
+    [activeListId, todos],
   )
 
   function addList(name: string) {
@@ -52,8 +47,11 @@ export function useTodos() {
     if (!trimmed) return
 
     const id = crypto.randomUUID()
-    setLists((prev) => [...prev, { id, name: trimmed }])
-    setSelectedListId(id)
+    setTodoState((current) => ({
+      ...current,
+      lists: [...current.lists, { id, name: trimmed }],
+      selectedListId: id,
+    }))
   }
 
   function addTodo(input: {
@@ -61,45 +59,72 @@ export function useTodos() {
     priority: Priority
     dueDate: string | null
   }) {
-    if (!selectedListId) return
-
     const trimmed = input.title.trim()
     if (!trimmed) return
 
-    const item: TodoItem = {
-      id: crypto.randomUUID(),
-      listId: selectedListId,
-      title: trimmed,
-      completed: false,
-      priority: input.priority,
-      dueDate: input.dueDate || null,
-    }
+    setTodoState((current) => {
+      const listId = getValidSelectedListId(
+        current.lists,
+        current.selectedListId,
+      )
+      if (!listId) return current
 
-    setTodos((prev) => [...prev, item])
+      const item: TodoItem = {
+        id: crypto.randomUUID(),
+        listId,
+        title: trimmed,
+        completed: false,
+        priority: input.priority,
+        dueDate: input.dueDate || null,
+      }
+
+      return {
+        ...current,
+        selectedListId: listId,
+        todos: [...current.todos, item],
+      }
+    })
   }
 
   function toggleTodo(id: string) {
-    setTodos((current) =>
-      current.map((todo) =>
+    setTodoState((current) => ({
+      ...current,
+      todos: current.todos.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo,
       ),
-    )
+    }))
   }
 
   function deleteTodo(id: string) {
-    setTodos((current) =>
-      current.filter(
-        (todo) => !(todo.id === id && todo.listId === selectedListId),
-      ),
-    )
+    setTodoState((current) => {
+      const listId = getValidSelectedListId(
+        current.lists,
+        current.selectedListId,
+      )
+
+      return {
+        ...current,
+        selectedListId: listId,
+        todos: current.todos.filter(
+          (todo) => !(todo.id === id && todo.listId === listId),
+        ),
+      }
+    })
+  }
+
+  function selectList(id: string) {
+    setTodoState((current) => {
+      if (!current.lists.some((list) => list.id === id)) return current
+      return { ...current, selectedListId: id }
+    })
   }
 
   return {
     lists,
-    selectedListId,
+    selectedListId: activeListId,
     selectedList,
     todosForSelectedList,
-    setSelectedListId,
+    setSelectedListId: selectList,
     addList,
     addTodo,
     toggleTodo,

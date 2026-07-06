@@ -34,7 +34,8 @@ See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rule
 ## Todo behavior
 
 - Use the **Delete** control on a todo row to remove that todo from the currently selected list.
-- Todo deletes update local React state only; there is no backend or persistence layer.
+- Lists, todos, and the selected list are saved to `localStorage` after changes and restored on the next load.
+- The starter seed data is shown only when no saved data exists or saved data cannot be parsed safely.
 - Priority is shown with color-coded badges and matching row accents: low is green, medium is amber, and high is red.
 - Completed todos keep their priority color and remain readable while the title is struck through.
 - Use the **Filter** control to show all, open, or completed todos in the selected list.
