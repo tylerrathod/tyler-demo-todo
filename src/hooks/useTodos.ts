@@ -86,6 +86,14 @@ export function useTodos() {
     )
   }
 
+  function deleteTodo(id: string) {
+    setTodos((current) =>
+      current.filter(
+        (todo) => !(todo.id === id && todo.listId === selectedListId),
+      ),
+    )
+  }
+
   return {
     lists,
     selectedListId,
@@ -95,5 +103,6 @@ export function useTodos() {
     addList,
     addTodo,
     toggleTodo,
+    deleteTodo,
   }
 }
