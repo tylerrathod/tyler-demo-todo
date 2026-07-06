@@ -1,10 +1,15 @@
+import { useMemo, useState } from 'react'
 import { ListSidebar } from './components/ListSidebar'
 import { TodoForm } from './components/TodoForm'
 import { TodoList } from './components/TodoList'
 import { useTodos } from './hooks/useTodos'
+import { getDisplayedTodos } from './todoDisplay'
+import type { TodoFilter, TodoSort } from './todoDisplay'
 import './App.css'
 
 function App() {
+  const [filter, setFilter] = useState<TodoFilter>('all')
+  const [sort, setSort] = useState<TodoSort>('manual')
   const {
     lists,
     selectedListId,
@@ -16,6 +21,11 @@ function App() {
     toggleTodo,
     deleteTodo,
   } = useTodos()
+
+  const displayedTodos = useMemo(
+    () => getDisplayedTodos(todosForSelectedList, filter, sort),
+    [filter, sort, todosForSelectedList],
+  )
 
   return (
     <div className="app">
@@ -41,10 +51,39 @@ function App() {
           </header>
 
           <TodoForm onAdd={addTodo} />
+          <section className="todo-controls" aria-label="Todo display controls">
+            <label>
+              Filter
+              <select
+                value={filter}
+                onChange={(event) => setFilter(event.target.value as TodoFilter)}
+              >
+                <option value="all">All</option>
+                <option value="open">Open</option>
+                <option value="completed">Completed</option>
+              </select>
+            </label>
+            <label>
+              Sort
+              <select
+                value={sort}
+                onChange={(event) => setSort(event.target.value as TodoSort)}
+              >
+                <option value="manual">Manual order</option>
+                <option value="dueDate">Due date</option>
+                <option value="priority">Priority</option>
+              </select>
+            </label>
+          </section>
           <TodoList
-            todos={todosForSelectedList}
+            todos={displayedTodos}
             onToggle={toggleTodo}
             onDelete={deleteTodo}
+            emptyMessage={
+              todosForSelectedList.length === 0
+                ? 'No todos in this list yet.'
+                : 'No todos match the current filter.'
+            }
           />
         </main>
       </div>

@@ -37,3 +37,6 @@ See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rule
 - Todo deletes update local React state only; there is no backend or persistence layer.
 - Priority is shown with color-coded badges and matching row accents: low is green, medium is amber, and high is red.
 - Completed todos keep their priority color and remain readable while the title is struck through.
+- Use the **Filter** control to show all, open, or completed todos in the selected list.
+- Use the **Sort** control to keep manual order, sort by due date, or sort by priority.
+- Filtering and sorting derive the displayed todo rows without mutating the underlying todo state.
