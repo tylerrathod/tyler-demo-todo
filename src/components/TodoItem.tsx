@@ -18,9 +18,12 @@ function formatDueDate(dueDate: string | null) {
 
 export function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
   const dueLabel = formatDueDate(todo.dueDate)
+  const itemClassName = `todo-item todo-priority-${todo.priority}${
+    todo.completed ? ' completed' : ''
+  }`
 
   return (
-    <li className={todo.completed ? 'todo-item completed' : 'todo-item'}>
+    <li className={itemClassName}>
       <label className="todo-main">
         <input
           type="checkbox"
