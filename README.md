@@ -41,3 +41,5 @@ See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rule
 - Use the **Filter** control to show all, open, or completed todos in the selected list.
 - Use the **Sort** control to keep manual order, sort by due date, or sort by priority.
 - Filtering and sorting derive the displayed todo rows without mutating the underlying todo state.
+- Manual order is the default sort. In manual order, drag todo rows within the active list to reorder them; due date and priority sorts disable dragging so the sorted view stays clear.
+- New lists can be assigned one of the fixed accent colors, and that color is shown in the sidebar. Older saved lists without a color are restored with the default blue accent.

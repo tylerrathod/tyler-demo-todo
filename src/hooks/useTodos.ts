@@ -5,7 +5,9 @@ import {
   loadTodoState,
   saveTodoState,
 } from '../todoStorage'
-import type { Priority, TodoItem } from '../types'
+import { reorderTodosWithinList } from '../todoReorder'
+import { DEFAULT_LIST_COLOR } from '../types'
+import type { ListColor, Priority, TodoItem } from '../types'
 
 function getTodoStorage() {
   if (typeof window === 'undefined') return null
@@ -42,14 +44,14 @@ export function useTodos() {
     [activeListId, todos],
   )
 
-  function addList(name: string) {
+  function addList(name: string, color: ListColor = DEFAULT_LIST_COLOR) {
     const trimmed = name.trim()
     if (!trimmed) return
 
     const id = crypto.randomUUID()
     setTodoState((current) => ({
       ...current,
-      lists: [...current.lists, { id, name: trimmed }],
+      lists: [...current.lists, { id, name: trimmed, color }],
       selectedListId: id,
     }))
   }
@@ -119,6 +121,29 @@ export function useTodos() {
     })
   }
 
+  function reorderTodo(draggedTodoId: string, targetTodoId: string) {
+    setTodoState((current) => {
+      const listId = getValidSelectedListId(
+        current.lists,
+        current.selectedListId,
+      )
+      const todos = reorderTodosWithinList(
+        current.todos,
+        listId,
+        draggedTodoId,
+        targetTodoId,
+      )
+
+      if (todos === current.todos) return current
+
+      return {
+        ...current,
+        selectedListId: listId,
+        todos,
+      }
+    })
+  }
+
   return {
     lists,
     selectedListId: activeListId,
@@ -129,5 +154,6 @@ export function useTodos() {
     addTodo,
     toggleTodo,
     deleteTodo,
+    reorderTodo,
   }
 }
