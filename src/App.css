@@ -169,7 +169,8 @@ button[type='submit']:hover {
 
 .todo-item.completed .todo-title {
   text-decoration: line-through;
-  color: #64748b;
+  color: #334155;
+  font-weight: 500;
 }
 
 .todo-main {
